@@ -36,11 +36,12 @@ new Vue({
     },
     specialAttack: function(target, min, max) {
       const isPlayer = target === 'monster';
-      const damage   = this.randomNumber(min, max);
-      if(!isPlayer || !this.specialAttackUsed) {
-        this[`${target}Health`] = Math.max(this[`${target}Health`] - damage, 0);
-        this.logTurn(isPlayer, `${isPlayer ? 'Player' : 'Monster'} hits ${target.toUpperCase()} hard for ${damage}`);
+      if(isPlayer && this.specialAttackUsed) {
+        return;
       }
+      const damage = this.randomNumber(min, max);
+      this[`${target}Health`] = Math.max(this[`${target}Health`] - damage, 0);
+      this.logTurn(isPlayer, `${isPlayer ? 'Player' : 'Monster'} hits ${target.toUpperCase()} hard for ${damage}`);
       if(isPlayer) {
         this.specialAttackUsed = true;
         this.monsterRound();
