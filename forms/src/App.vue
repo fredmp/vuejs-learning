@@ -12,6 +12,7 @@
                         type="text"
                         id="email"
                         class="form-control"
+                        placeholder="Email"
                         v-model="email">
                   </div>
                   <div class="form-group">
@@ -20,6 +21,7 @@
                         type="text"
                         id="password"
                         class="form-control"
+                        placeholder="Password"
                         v-model="password">
                   </div>
                   <div class="form-group">
