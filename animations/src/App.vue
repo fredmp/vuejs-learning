@@ -49,69 +49,111 @@
                   :css="false">
                   <div class="load-div" v-if="load"></div>
                 </transition>
+                <hr>
+                <h1>Animations with Dynamic Components</h1>
+                <button
+                  class="btn btn-primary"
+                  @click="selectedComponent = selectedComponent == 'success-alert' ? 'danger-alert' : 'success-alert'">
+                  Toogle
+                </button>
+                <br>
+                <br>
+                <transition name="fade" mode="out-in">
+                  <component :is="selectedComponent"></component>
+                </transition>
+                <hr>
+                <h1>Animations with Lists</h1>
+                <button class="btn btn-primary" @click="addItem">Add Item</button>
+                <br>
+                <br>
+                <ul class="list-group">
+                  <transition-group name="slide" mode="out-in">
+                    <li
+                      class="list-group-item pointer"
+                      @click="removeItem(index)"
+                      v-for="(number, index) in numbers"
+                      :key="number">{{ number }}</li>
+                  </transition-group>
+                </ul>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-    export default {
-        data () {
-            return {
-              show: true,
-              load: false,
-              animationType: 'fade'
-            }
-        },
-        methods: {
-          beforeEnter (el) {
-            console.log('beforeEnter');
-            el.style.width = '100px';
-          },
-          enter (el, done) {
-            console.log('enter');
-            let round = 1;
-            const initialWidth = 100;
-            const interval = setInterval(function () {
-              el.style.width = (initialWidth + round * 10) + 'px';
-              round++;
-              if (round > 20) {
-                clearInterval(interval);
-                done();
-              }
-            }, 20);
-          },
-          afterEnter (el) {
-            console.log('afterEnter');
-          },
-          enterCancelled (el) {
-            console.log('enterCancelled');
-          },
-          beforeLeave (el) {
-            console.log('beforeLeave');
-            el.style.width = '300px';
-          },
-          leave (el, done) {
-            console.log('leave');
-            let round = 1;
-            const initialWidth = 100;
-            const interval = setInterval(function () {
-              el.style.width = (initialWidth - round * 10) + 'px';
-              round++;
-              if (round > 20) {
-                clearInterval(interval);
-                done();
-              }
-            }, 20);
-          },
-          afterLeave (el) {
-            console.log('afterLeave');
-          },
-          leaveCancelled (el) {
-            console.log('leaveCancelled');
-          }
+  import SuccessAlert from './SuccessAlert.vue';
+  import DangerAlert from './DangerAlert.vue';
+  export default {
+    data () {
+        return {
+          show: true,
+          load: false,
+          animationType: 'fade',
+          selectedComponent: 'success-alert',
+          numbers: [1, 2, 3, 4, 5, 6]
         }
+    },
+    methods: {
+      addItem () {
+        const last = this.numbers.length > 0 ? Math.max(...this.numbers) : 0;
+        const position = Math.floor(Math.random() * this.numbers.length)
+        this.numbers.splice(position, 0, last + 1);
+      },
+      removeItem (index) {
+        this.numbers.splice(index, 1);
+      },
+      beforeEnter (el) {
+        console.log('beforeEnter');
+        el.style.width = '100px';
+      },
+      enter (el, done) {
+        console.log('enter');
+        let round = 1;
+        const initialWidth = 100;
+        const interval = setInterval(function () {
+          el.style.width = (initialWidth + round * 10) + 'px';
+          round++;
+          if (round > 20) {
+            clearInterval(interval);
+            done();
+          }
+        }, 20);
+      },
+      afterEnter (el) {
+        console.log('afterEnter');
+      },
+      enterCancelled (el) {
+        console.log('enterCancelled');
+      },
+      beforeLeave (el) {
+        console.log('beforeLeave');
+        el.style.width = '300px';
+      },
+      leave (el, done) {
+        console.log('leave');
+        let round = 1;
+        const initialWidth = 100;
+        const interval = setInterval(function () {
+          el.style.width = (initialWidth - round * 10) + 'px';
+          round++;
+          if (round > 20) {
+            clearInterval(interval);
+            done();
+          }
+        }, 20);
+      },
+      afterLeave (el) {
+        console.log('afterLeave');
+      },
+      leaveCancelled (el) {
+        console.log('leaveCancelled');
+      }
+    },
+    components: {
+      SuccessAlert,
+      DangerAlert
     }
+  }
 </script>
 
 <style>
@@ -119,6 +161,9 @@
     width: 300px;
     height: 100px;
     background-color: lightGreen;
+  }
+  li.pointer {
+    cursor: pointer;
   }
 
   /*Transitions*/
@@ -154,6 +199,11 @@
     animation: slide-out 1s ease-out forwards;
     transition: opacity 3s;
     opacity: 0;
+    position: absolute;
+  }
+  /*Class below is for transition groups*/
+  .slide-move {
+    transition: transform 1s;
   }
 
   @keyframes slide-in {
