@@ -45,11 +45,6 @@
     background-color: #ffc0c1;
 }
 
-.button-disabled {
-    opacity: 0.65;
-    cursor: not-allowed;
-}
-
 button {
     font-size: 20px;
     background-color: #eee;

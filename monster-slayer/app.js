@@ -2,11 +2,12 @@ new Vue({
   el: '#app',
   data: {
     turns            : [],
+    currentTurn      : 0,
     playerHealth     : 100,
     monsterHealth    : 100,
     availableHealigns: 5,
     gameIsRunning    : false,
-    specialAttackUsed: false,
+    specialAttackUsed: false
   },
   watch: {
     playerHealth: function(value) {
@@ -18,7 +19,8 @@ new Vue({
   },
   methods: {
     startGame: function() {
-      this.turns             = [],
+      this.turns             = [];
+      this.currentTurn       = 0;
       this.gameIsRunning     = true;
       this.playerHealth      = 100;
       this.monsterHealth     = 100;
@@ -84,7 +86,8 @@ new Vue({
       }
     },
     logTurn: function(isPlayer, text) {
-      this.turns.unshift({isPlayer, text});
+      this.currentTurn++;
+      this.turns.unshift({id: this.currentTurn, isPlayer, text});
     },
   },
 });
