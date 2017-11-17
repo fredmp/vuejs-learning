@@ -2,6 +2,26 @@
     <div>
       <p>Loaded user: {{ $route.params.id }}</p>
       <router-link
-        :to="{ name: 'userEdit', params: { id: $route.params.id }, query: { q: 100, locale: 'pt-BR' } }">Edit</router-link>
+        :to="link">Edit</router-link>
     </div>
 </template>
+
+<script type="text/javascript">
+  export default {
+    data () {
+      return {
+        link: {
+          name: 'userEdit',
+          params: { id: this.$route.params.id },
+          query: { q: 100, locale: 'pt-BR' },
+          hash: '#anchor'
+        }
+      }
+    },
+    beforeRouteEnter (to, from, next) {
+      // Executes before component is created - has no access to component data
+      console.log('beforeRouteEnter');
+      next();
+    }
+  }
+</script>
