@@ -1,6 +1,6 @@
 <template>
     <div>
-      <p>Loaded user: {{ $route.params.id }}</p>
+      <p>Loaded user: {{ userId }}</p>
       <router-link
         :to="link">Edit</router-link>
     </div>
@@ -15,7 +15,8 @@
           params: { id: this.$route.params.id },
           query: { q: 100, locale: 'pt-BR' },
           hash: '#anchor'
-        }
+        },
+        userId: this.$route.params.id
       }
     },
     beforeRouteEnter (to, from, next) {

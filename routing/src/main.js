@@ -24,7 +24,15 @@ router.beforeEach((to, from, next) => {
   console.log('TO: ', to);
   console.log('FROM: ', from);
   console.log('NEXT: ', next);
-  next();
+
+  // Example using route meta info
+  if (to.matched.some(record => record.meta.requiresAuthentication)) {
+    // Do something....
+    console.log('record.meta.requiresAuthentication');
+    next();
+  } else {
+    next();
+  }
 });
 
 new Vue({

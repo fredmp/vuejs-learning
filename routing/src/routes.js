@@ -6,6 +6,10 @@ import Header from './components/Header.vue';
 // This is good to load resources only when we need them
 // And also to increase the number of requests we are allowed to perform
 // This will create a separate bundle for each resource
+
+// Important: In newer version of webpack this code is nicer
+// Check here: https://router.vuejs.org/en/advanced/lazy-loading.html
+
 const User = resolve => {
   require.ensure(['./components/user/User.vue'], () => {
     resolve(require('./components/user/User.vue'));
@@ -30,6 +34,10 @@ const UserDetail = resolve => {
   }, 'user');
 };
 
+// Instead of a redirect to home the last route (*) should point to a NotFoundComponent
+// Then in the server we can configure 404 to return index.html
+// There are good examples on https://router.vuejs.org/en/essentials/history-mode.html
+
 export const routes = [
   {
     path: '',
@@ -40,13 +48,19 @@ export const routes = [
     }
   },
   {
+    path: '/home/:message',
+    name: 'homeWithMessage',
+    props: true, // Allows to send a parameter as a component props
+    component: Home
+  },
+  {
     path: '/user',
     components: {
       default: User,
       'header-bottom': Header
     },
     children: [
-      { path: '', component: UserStart },
+      { path: '', component: UserStart, meta: { requiresAuthentication: true } },
       { path: ':id', component: UserDetail },
       {
         path: ':id/edit',
