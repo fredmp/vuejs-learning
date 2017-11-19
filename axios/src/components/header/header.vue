@@ -5,19 +5,39 @@
     </div>
     <nav>
       <ul>
-        <li>
+        <li v-show="!auth">
           <router-link to="/signup">Sign Up</router-link>
         </li>
-        <li>
+        <li v-show="!auth">
           <router-link to="/signin">Sign In</router-link>
         </li>
-        <li>
+        <li v-show="auth">
           <router-link to="/dashboard">Dashboard</router-link>
+        </li>
+        <li v-show="auth">
+          <button @click="logout" class="logout">Logout</button>
         </li>
       </ul>
     </nav>
   </header>
 </template>
+
+<script type="text/javascript">
+  export default {
+    computed: {
+      auth () {
+        return this.$store.getters.authenticated;
+      }
+    },
+    methods: {
+      logout () {
+        this.$store.dispatch('logout').then(() => {
+          this.$router.replace('/signin');
+        });
+      }
+    }
+  }
+</script>
 
 <style scoped>
   #header {
@@ -28,6 +48,14 @@
     align-items: center;
     background-color: #521751;
     padding: 0 20px;
+  }
+
+  .logout {
+    background-color: transparent;
+    border: none;
+    font: inherit;
+    color: white;
+    cursor: pointer;
   }
 
   .logo {

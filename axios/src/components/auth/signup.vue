@@ -69,8 +69,6 @@
 </template>
 
 <script>
-  import axios from '../../axios-auth';
-
   export default {
     data () {
       return {
@@ -95,19 +93,20 @@
         this.hobbyInputs = this.hobbyInputs.filter(hobby => hobby.id !== id)
       },
       onSubmit () {
-        const formData = {
+        const userData = {
           email: this.email,
           age: this.age,
           password: this.password,
-          confirmPassword: this.confirmPassword,
           country: this.country,
           hobbies: this.hobbyInputs.map(hobby => hobby.value),
           terms: this.terms
-        }
-        console.log(formData)
-        axios.post('/users.json', formData)
-          .then(res => console.log(res))
-          .catch(error => console.log(error))
+        };
+        console.log(userData);
+        this.$store.dispatch('signup', userData).then(() => {
+          if (this.$store.getters.authenticated) {
+            this.$router.replace('/dashboard');
+          }
+        });
       }
     }
   }

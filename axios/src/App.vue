@@ -11,6 +11,18 @@
     name: 'app',
     components: {
       'app-header': Header
+    },
+    watch: {
+      authenticated: function (value) {
+        if (!value) {
+          this.$router.replace('/signin');
+        }
+      }
+    },
+    computed: {
+      authenticated () {
+        return this.$store.getters.authenticated;
+      }
     }
   }
 </script>

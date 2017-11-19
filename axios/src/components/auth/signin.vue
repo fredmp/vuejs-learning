@@ -34,11 +34,15 @@
     },
     methods: {
       onSubmit () {
-        const formData = {
+        this.$store.dispatch('login', {
           email: this.email,
-          password: this.password,
-        }
-        console.log(formData)
+          password: this.password
+        }).then(() => {
+          console.log(this.$store.getters.authenticated);
+          if (this.$store.getters.authenticated) {
+            this.$router.replace('/dashboard');
+          }
+        });
       }
     }
   }
