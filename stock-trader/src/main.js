@@ -1,17 +1,16 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import VueResource from 'vue-resource';
 import Popover  from 'vue-js-popover'
+import axios from 'axios';
 
 import App from './App.vue';
 import { routes } from './routes';
 import store from './store/store';
 
-Vue.use(Popover, { tooltip: true });
-Vue.use(VueResource);
-Vue.use(VueRouter);
+axios.defaults.baseURL = 'https://vuejs-learning-59349.firebaseio.com/'
 
-Vue.http.options.root = 'https://vuejs-learning-59349.firebaseio.com/';
+Vue.use(Popover, { tooltip: true });
+Vue.use(VueRouter);
 
 Vue.filter('currency', (value) => {
   return `\$${value.toLocaleString()}`;

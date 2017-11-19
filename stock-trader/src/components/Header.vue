@@ -47,6 +47,8 @@
 </template>
 
 <script>
+  import axios from 'axios';
+
   export default {
     data () {
       return {
@@ -74,7 +76,9 @@
           portfolio: this.portfolio,
           stocks: this.stocks
         };
-        this.$http.put('data.json', data);
+        axios.put('/data.json', data).then(response => {
+          console.log(response);
+        }).catch(error => console.log(error));
       },
       load () {
         this.$store.dispatch('load');

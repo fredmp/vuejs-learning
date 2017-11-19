@@ -1,16 +1,15 @@
-import Vue from 'vue';
+import axios from 'axios';
 
 export const load = ({ commit }) => {
-  Vue.http.get('data.json')
-    .then(response => response.json())
-    .then(data => {
-      if (data) {
-        const portfolio = {
-          funds: data.funds,
-          stocks: data.portfolio ? data.portfolio : []
-        };
-        commit('stocks/set', data.stocks);
-        commit('portfolio/set', portfolio);
-      }
-    });
+  axios.get('/data.json').then(response => {
+    console.log(response);
+    if (response.data) {
+      const portfolio = {
+        funds: response.data.funds,
+        stocks: response.data.portfolio ? response.data.portfolio : []
+      };
+      commit('stocks/set', response.data.stocks);
+      commit('portfolio/set', portfolio);
+    }
+  }).catch(error => console.log(error));
 };
